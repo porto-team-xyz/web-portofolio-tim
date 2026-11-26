@@ -7,14 +7,15 @@ Terima kasih sudah berkontribusi di **Web Portofolio Tim**. Dokumen ini adalah a
 ## Daftar Isi
 
 1. [Prinsip Dasar](#1-prinsip-dasar)
-2. [Alur Kerja Harian](#3-alur-kerja-harian)
-3. [Aturan Penamaan Branch](#4-aturan-penamaan-branch)
-4. [Aturan Pesan Commit](#5-aturan-pesan-commit)
-5. [Aturan Pull Request](#6-aturan-pull-request)
-6. [Aturan Code Review](#7-aturan-code-review)
-7. [Menangani Merge Conflict](#8-menangani-merge-conflict)
-8. [Aturan Khusus Proyek Laravel](#9-aturan-khusus-proyek-laravel)
-9. [Komunikasi Tim](#10-komunikasi-tim)
+2. [Menyiapkan Lingkungan Kerja](#2-menyiapkan-lingkungan-kerja)
+3. [Alur Kerja Harian](#3-alur-kerja-harian)
+4. [Aturan Penamaan Branch](#4-aturan-penamaan-branch)
+5. [Aturan Pesan Commit](#5-aturan-pesan-commit)
+6. [Aturan Pull Request](#6-aturan-pull-request)
+7. [Aturan Code Review](#7-aturan-code-review)
+8. [Menangani Merge Conflict](#8-menangani-merge-conflict)
+9. [Aturan Khusus Proyek Laravel](#9-aturan-khusus-proyek-laravel)
+10. [Komunikasi Tim](#10-komunikasi-tim)
 
 ---
 
@@ -26,9 +27,42 @@ Terima kasih sudah berkontribusi di **Web Portofolio Tim**. Dokumen ini adalah a
 - **`main` harus selalu stabil**, yaitu bisa dijalankan tanpa error.
 - **Tidak ada rahasia di repo.** Jangan commit `.env`, password, token, atau kunci API.
 
----
+## 2. Menyiapkan Lingkungan Kerja
 
-## 2. Alur Kerja Harian
+**Versi yang dipakai tim** (samakan agar tidak ada masalah "di laptopku jalan"):
+
+| Tool | Versi |
+|---|---|
+| PHP | 8.3 |
+| Composer | 2.x |
+| Node.js | 20 LTS |
+| Git | terbaru |
+| Docker Desktop | terbaru |
+
+**Langkah pertama kali:**
+
+```bash
+git clone git@github.com:NAMA-ORG/web-portofolio-tim.git
+cd web-portofolio-tim
+
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+
+# terminal 1
+php artisan serve
+# terminal 2
+npm run dev
+```
+
+**Catatan penting:**
+
+- Gunakan `composer install`, **bukan** `composer update`, untuk kerja sehari-hari. `composer update` mengubah `composer.lock` dan hanya boleh dilakukan lewat issue/PR khusus.
+- Jangan pernah meng-commit file `.env`. Jika menambah variabel baru, tambahkan juga ke `.env.example`.
+
+## 3. Alur Kerja Harian
 
 ```
 Ambil issue → pull main → buat branch → kerja + commit
@@ -37,7 +71,7 @@ Ambil issue → pull main → buat branch → kerja + commit
 
 Langkah rinci:
 
-1. **Ambil issue** dari board GitHub Projects. Pastikan sudah ada nama kamu di _Assignees_. Geser kartu ke **In Progress**.
+1. **Ambil issue** dari board GitHub Projects. Pastikan sudah ada nama kamu di *Assignees*. Geser kartu ke **In Progress**.
 2. **Sinkronkan `main`** lalu buat branch baru:
    ```bash
    git checkout main
@@ -51,7 +85,7 @@ Langkah rinci:
    ```
 5. **Buka Pull Request** di GitHub dan geser kartu ke **In Review**.
 6. **Review silang**, perbaiki jika diminta, lalu **merge** setelah approve.
-7. **Bersihkan dan sinkronkan la gi:**
+7. **Bersihkan dan sinkronkan lagi:**
    ```bash
    git checkout main
    git pull origin main
@@ -67,35 +101,35 @@ git checkout feature/nama-fitur
 git merge main
 ```
 
-## 3. Aturan Penamaan Branch
+## 4. Aturan Penamaan Branch
 
 Format: `jenis/deskripsi-singkat-dengan-tanda-hubung`
 
-| Jenis       | Kegunaan                               | Contoh                       |
-| ----------- | -------------------------------------- | ---------------------------- |
-| `feature/`  | Fitur atau tampilan baru               | `feature/section-tim`        |
-| `fix/`      | Perbaikan bug                          | `fix/navbar-mobile`          |
-| `chore/`    | Konfigurasi, dependency, Docker, CI    | `chore/dockerfile-awal`      |
-| `docs/`     | Dokumentasi dan konten                 | `docs/tambah-bio-anggota`    |
+| Jenis | Kegunaan | Contoh |
+|---|---|---|
+| `feature/` | Fitur atau tampilan baru | `feature/section-tim` |
+| `fix/` | Perbaikan bug | `fix/navbar-mobile` |
+| `chore/` | Konfigurasi, dependency, Docker, CI | `chore/dockerfile-awal` |
+| `docs/` | Dokumentasi dan konten | `docs/tambah-bio-anggota` |
 | `refactor/` | Merapikan kode tanpa mengubah perilaku | `refactor/kontak-controller` |
 
 Aturan: huruf kecil semua, tanpa spasi, singkat tetapi jelas.
 
-## 4. Aturan Pesan Commit
+## 5. Aturan Pesan Commit
 
 Kami memakai **Conventional Commits**.
 
 Format: `jenis: deskripsi singkat`
 
-| Jenis      | Kegunaan                                        |
-| ---------- | ----------------------------------------------- |
-| `feat`     | Menambah fitur                                  |
-| `fix`      | Memperbaiki bug                                 |
-| `docs`     | Perubahan dokumentasi                           |
-| `style`    | Perubahan tampilan/format tanpa mengubah logika |
-| `refactor` | Merapikan struktur kode                         |
-| `test`     | Menambah atau mengubah test                     |
-| `chore`    | Konfigurasi, dependency, Docker, CI             |
+| Jenis | Kegunaan |
+|---|---|
+| `feat` | Menambah fitur |
+| `fix` | Memperbaiki bug |
+| `docs` | Perubahan dokumentasi |
+| `style` | Perubahan tampilan/format tanpa mengubah logika |
+| `refactor` | Merapikan struktur kode |
+| `test` | Menambah atau mengubah test |
+| `chore` | Konfigurasi, dependency, Docker, CI |
 
 **Contoh yang baik:**
 
@@ -121,7 +155,7 @@ perubahan terakhir
 - Satu commit membahas satu hal. Jangan campur banyak perubahan tak berkaitan.
 - Commit lebih baik kecil dan sering.
 
-## 5. Aturan Pull Request
+## 6. Aturan Pull Request
 
 **Judul PR** mengikuti format commit, misalnya `feat: tambah section tim`.
 
@@ -129,16 +163,13 @@ perubahan terakhir
 
 ```markdown
 ## Ringkasan
-
 Apa yang diubah dan kenapa.
 
 ## Perubahan
-
 - Poin perubahan 1
 - Poin perubahan 2
 
 ## Cara menguji
-
 1. Langkah untuk mencoba perubahan ini
 2. Hasil yang diharapkan
 
@@ -162,7 +193,7 @@ Closes #nomor-issue
 - Pembuat PR yang melakukan **merge** setelah mendapat approval.
 - Setelah merge, **hapus branch** yang sudah selesai.
 
-## 6. Aturan Code Review
+## 7. Aturan Code Review
 
 - **Minimal 1 approval** dari anggota lain sebelum merge. Pembuat PR tidak bisa meng-approve PR sendiri.
 - **Reviewer bergiliran** (pola melingkar) supaya semua belajar membaca kode orang lain:
@@ -171,7 +202,7 @@ Closes #nomor-issue
   - PR Anggota C → di-review Anggota A
   - Jika yang bertugas berhalangan, anggota lain boleh menggantikan.
 - **Target waktu review: maksimal 24 jam.** Jika terlambat, pembuat PR boleh mengingatkan di chat.
-- Pembuat PR menunjuk reviewer lewat menu _Reviewers_.
+- Pembuat PR menunjuk reviewer lewat menu *Reviewers*.
 
 **Yang diperiksa reviewer:**
 
@@ -181,17 +212,23 @@ Closes #nomor-issue
 - Apakah tampilan rapi di HP dan desktop?
 - Apakah sebaiknya dicoba langsung dengan checkout branch-nya?
 
+**Cara memberi masukan:**
+
+- Sopan, spesifik, dan fokus pada kode, bukan orangnya.
+- Jelaskan alasannya, bukan hanya "ini salah". Beri saran perbaikan jika bisa.
+- Beri apresiasi pada hal yang sudah bagus.
+
 **Pilihan review di GitHub:**
 
-| Pilihan             | Kapan dipakai                               |
-| ------------------- | ------------------------------------------- |
-| **Comment**         | Pertanyaan atau masukan ringan              |
+| Pilihan | Kapan dipakai |
+|---|---|
+| **Comment** | Pertanyaan atau masukan ringan |
 | **Request changes** | Ada hal yang wajib diperbaiki sebelum merge |
-| **Approve**         | Sudah layak digabung                        |
+| **Approve** | Sudah layak digabung |
 
 Jika diminta perbaikan, pembuat PR memperbaiki lalu push lagi ke branch yang sama. PR akan ter-update otomatis. Setelah perubahan baru, approval lama bisa dibatalkan dan perlu review ulang.
 
-## 7. Menangani Merge Conflict
+## 8. Menangani Merge Conflict
 
 Conflict itu normal, bukan kesalahan. Langkah penyelesaiannya:
 
@@ -219,7 +256,7 @@ Conflict itu normal, bukan kesalahan. Langkah penyelesaiannya:
 - Kabari di chat sebelum mengubah file bersama seperti `routes/web.php`, `layouts/app.blade.php`, dan `composer.json`.
 - Sering `pull` dari `main`.
 
-## 8. Aturan Khusus Proyek Laravel
+## 9. Aturan Khusus Proyek Laravel
 
 - **Struktur view:** layout di `resources/views/layouts/`, tiap section di `resources/views/sections/`.
 - **Validasi** selalu dilakukan di sisi server (Form Request atau `$request->validate()`).
@@ -231,7 +268,7 @@ Conflict itu normal, bukan kesalahan. Langkah penyelesaiannya:
 - **Test:** tambahkan test untuk logika penting (misalnya form kontak) dan jalankan `php artisan test` sebelum membuka PR.
 - **Dependency baru** (Composer/NPM) diumumkan di chat dan dijelaskan alasannya di PR.
 
-## 9. Komunikasi Tim
+## 10. Komunikasi Tim
 
 - **Sync rutin:** 2x seminggu (15-30 menit): apa yang sudah selesai, apa yang akan dikerjakan, apa yang menghambat.
 - **Terhambat?** Jangan diam. Tulis di komentar issue atau chat grup, lalu ambil issue lain yang tidak bergantung.
